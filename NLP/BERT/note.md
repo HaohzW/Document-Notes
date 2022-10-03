@@ -65,7 +65,7 @@ $$
 
 ​	构成序列的方法如下：
 
-1. 每个序列的第一个token是[CLS]（classification），该token在模型中最后对应的输出是整个序列的representation
+1. 每个序列的第一个token是[CLS]（classification），将该符号对应的输出向量作为整篇文本的语义表示，用于文本分类
 2. 序列中，区分两个句子，使用两种方法：
    1. 用[SEP]区分它们
    2. 给每一个token原始向量加一个学习得来的嵌入，用于表示每个token属于第一个句子还是第二个句子
@@ -87,8 +87,57 @@ $$
   - 以80%的概率替换为[MASK]
   - 以10%的概率替换为随机token（加入噪音）
   - 以10%的概率不变（使模型表示向实际观察到的词靠拢）
-
 - 被选中的词$i$的隐藏层向量输出$T_i$将使用交叉熵损失预测原始的原始token
+
+#### Task2：Next Sentence Prediction（NSP）
+
+*由于许多下游任务（例如问答）是基于对两个句子之间关系的理解，因此，引入了这一任务*
+
+​	训练时，输入句子A和句子B拼接成的序列，其中，50%的情况是B是A在文本中的下一个句子（`IsNext`），50%情况是B不是A在文本中的下一个句子（`NotNext`）。如上图BERT架构所示，C用于next sentence prediction（NSP）。
+
+### Fine-tuning BERT
+
+​	**BERT与其他基于encoder-decoder的区别**：由于把句子对作为输入，因此，self-attention能同时看到两个句子，一般的encoder看不到decoder的东西。
+
+​	对于每一个下游任务，只需将特定的输入和输出与BERT模型对应，并且微调所有的参数。例如，根据下游任务的不同：
+
+- **Input**：
+  - paraphrasing 中的句子对 
+  - entailment 中的假设-前提对
+  - question answering中使用的question-passage 对
+  - 文本分类或序列标记中使用的$text-\empty$对
+- **Output**：
+  - token的BERT输出表示被输入到输出层用于token水平的任务
+  - [CLS]表示被输入到输出层用于分类
+
+## Experiment
+
+### GLUE
+
+**General Language Understanding Evaluation (GLUE) benchmark**
+
+训练一个用于分类的输出层$W$，与[CLS]的最后输出C乘积做softmax，构造出一个多分类模型：
+$$
+softmax(CW^T)
+$$
+
+### SQuAD v1.0
+
+**Stanford Quesion Answering Dataset**
+
+​	给定一段文本，提出一个问题，把答案从文本中找出。任务建模为：对文本序列，判断每一个token是否是答案的开头S，是否是答案的结尾E。
+
+具体来说，学两个向量$S \in R^H$，$E \in R^H$，分别对应词元是答案开始的概率和答案结尾的概率。
+
+第$i$个token为答案序列的起始token的概率为：
+$$
+P_i=\frac{e^{ST_i}}{\sum_j{e^{ST_j}}}
+$$
+同理，第$j$个token为答案序列的末尾token的概率为：
+$$
+P_j=\frac{e^{ET_j}}{\sum_i{e^{ET_i}}}
+$$
+span$(i,j)$作为答案序列的分数定义为：$ST_i+ET_j$
 
 ## Conclusion
 
