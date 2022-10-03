@@ -47,11 +47,13 @@ BERT含有两个步骤：
 ![1664723017912](./fig/1664723017912.png)
 
 **模型架构**：BERT是一个多层的、双向的Transformer编码器架构，其中：
+
 $$
-L:Transformer块的个数	\\
-H:隐藏层的大小（宽度）	\\
-A:自注意力头的个数	\\
+L:Transformer块的个数 \\
+H:隐藏层的大小（宽度） \\
+A:自注意力头的个数 \\
 $$
+
 有两个模型：
 
 - $BERT_{BASE}(L=12,H=768,A=12)$ ，总参数110M，与GPT参数规模相当
@@ -118,6 +120,7 @@ $$
 **General Language Understanding Evaluation (GLUE) benchmark**
 
 训练一个用于分类的输出层 $W$ ，与[CLS]的最后输出C乘积做softmax，构造出一个多分类模型：
+
 $$
 softmax(CW^T)
 $$
@@ -131,13 +134,17 @@ $$
 具体来说，学两个向量 $S \in R^H$ ， $E \in R^H$ ，分别对应词元是答案开始的概率和答案结尾的概率。
 
 第 $i$ 个token为答案序列的起始token的概率为：
+
 $$
 P_i=\frac{e^{ST_i}}{\sum_j{e^{ST_j}}}
 $$
+
 同理，第 $j$ 个token为答案序列的末尾token的概率为：
+
 $$
 P_j=\frac{e^{ET_j}}{\sum_i{e^{ET_i}}}
 $$
+
 span $(i,j)$ 作为答案序列的分数定义为： $ST_i+ET_j$ 
 
 ## Conclusion
