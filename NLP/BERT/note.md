@@ -35,7 +35,7 @@
 
 ### 在有标注的数据上做迁移学习
 
-## BERT
+##  BERT
 
 BERT含有两个步骤：
 
@@ -54,8 +54,8 @@ A:自注意力头的个数	\\
 $$
 有两个模型：
 
-- $BERT_{BASE}(L=12,H=768,A=12)$，总参数110M，与GPT参数规模相当
-- $BERT_{LARGE}(L=24,H=1024,A=16)$，总参数340M
+- $BERT_{BASE}(L=12,H=768,A=12)$ ，总参数110M，与GPT参数规模相当
+- $BERT_{LARGE}(L=24,H=1024,A=16)$ ，总参数340M
 
 **Input/Output 表示**
 
@@ -87,7 +87,8 @@ $$
   - 以80%的概率替换为[MASK]
   - 以10%的概率替换为随机token（加入噪音）
   - 以10%的概率不变（使模型表示向实际观察到的词靠拢）
-- 被选中的词$i$的隐藏层向量输出$T_i$将使用交叉熵损失预测原始的原始token
+
+- 被选中的词 $i$ 的隐藏层向量输出 $T_i$ 将使用交叉熵损失预测原始的原始token
 
 #### Task2：Next Sentence Prediction（NSP）
 
@@ -105,7 +106,7 @@ $$
   - paraphrasing 中的句子对 
   - entailment 中的假设-前提对
   - question answering中使用的question-passage 对
-  - 文本分类或序列标记中使用的$text-\empty$对
+  - 文本分类或序列标记中使用的 $text-\empty$ 对
 - **Output**：
   - token的BERT输出表示被输入到输出层用于token水平的任务
   - [CLS]表示被输入到输出层用于分类
@@ -116,7 +117,7 @@ $$
 
 **General Language Understanding Evaluation (GLUE) benchmark**
 
-训练一个用于分类的输出层$W$，与[CLS]的最后输出C乘积做softmax，构造出一个多分类模型：
+训练一个用于分类的输出层 $W$ ，与[CLS]的最后输出C乘积做softmax，构造出一个多分类模型：
 $$
 softmax(CW^T)
 $$
@@ -127,17 +128,17 @@ $$
 
 ​	给定一段文本，提出一个问题，把答案从文本中找出。任务建模为：对文本序列，判断每一个token是否是答案的开头S，是否是答案的结尾E。
 
-具体来说，学两个向量$S \in R^H$，$E \in R^H$，分别对应词元是答案开始的概率和答案结尾的概率。
+具体来说，学两个向量 $S \in R^H$ ， $E \in R^H$ ，分别对应词元是答案开始的概率和答案结尾的概率。
 
-第$i$个token为答案序列的起始token的概率为：
+第 $i$ 个token为答案序列的起始token的概率为：
 $$
 P_i=\frac{e^{ST_i}}{\sum_j{e^{ST_j}}}
 $$
-同理，第$j$个token为答案序列的末尾token的概率为：
+同理，第 $j$ 个token为答案序列的末尾token的概率为：
 $$
 P_j=\frac{e^{ET_j}}{\sum_i{e^{ET_i}}}
 $$
-span $(i,j)$ 作为答案序列的分数定义为：$ST_i+ET_j$
+span $(i,j)$ 作为答案序列的分数定义为： $ST_i+ET_j$ 
 
 ## Conclusion
 
