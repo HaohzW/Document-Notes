@@ -137,7 +137,7 @@ $$
 $$
 P_j=\frac{e^{ET_j}}{\sum_i{e^{ET_i}}}
 $$
-span$(i,j)$作为答案序列的分数定义为：$ST_i+ET_j$
+span\\((i,j)\\)作为答案序列的分数定义为：$ST_i+ET_j$
 
 ## Conclusion
 
