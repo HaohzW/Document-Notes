@@ -22,7 +22,7 @@
 
 现有的预训练模型的局限性是：使用标准的语言模型，是单向的
 
-​	BERT采用**基于掩码的语言模型（masked language model，MLM）**【MLM随机遮挡输入的某些token，目标是基于上下文预测该位置的原始token】，这样便结合了**双向的信息**；此外，BERT还做了**“预测下一个句子”**的任务，能让模型学习**句子层面**的信息；
+​	BERT采用**基于掩码的语言模型（masked language model，MLM）**【MLM随机遮挡输入的某些token，目标是基于上下文预测该位置的原始token】，这样便结合了**双向的信息**；此外，BERT还做了“**预测下一个句子**”的任务，能让模型学习**句子层面**的信息；
 
 - 这篇文章强调了双向预训练语言表示模型的重要性；
 - BERT是一个基于微调的模型，对于很多sentence-level和token-level的特定任务均适用，在特定任务中，不需要做很繁重的模型调整和训练，且能表现地很好。
@@ -106,7 +106,7 @@ $$
   - paraphrasing 中的句子对 
   - entailment 中的假设-前提对
   - question answering中使用的question-passage 对
-  - 文本分类或序列标记中使用的 $text-\empty$ 对
+  - 文本分类或序列标记中使用的 $text-\emptyset$ 对
 - **Output**：
   - token的BERT输出表示被输入到输出层用于token水平的任务
   - [CLS]表示被输入到输出层用于分类
