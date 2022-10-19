@@ -133,7 +133,139 @@ $$
 - **Affine function**：令 $f:R^n \rightarrow R, f(x)=b^Tx+c,b \in R^n,c \in R$ ，则 $\nabla_x^2f(x)=0$ ，该矩阵既为半正定又为半负定，因此$f$ 既是凸函数又是凹函数
 - **Quadratic function**：令 $f:R^n \rightarrow R, f(x)=\frac{1}{2}x^TAx+b^Tx+c, 对称矩阵A \in S^n,b \in R^n, c \in R$ ，有 $\nabla_x^2f(x)=A$ ，因此， $f$ 的凸性仅仅由 $A$ 是否正半定决定，若 $A$ 正半定，则 $f$ 为凸函数，如果 $A$ 不定，则 $f$ 既不凹也不凸。
   - **squared Euclideam norm**： $f(x)=||x||_2^2=x^Tx$ 为严格凸函数，因为 $A=I,b=0,c=0$ 
-- **Norm**：
+- **Norm**：令 $f:R^n \rightarrow R$ 为 $R^n$ 上的范数，则 $f$ 是凸函数，根据三角不等式（使用second-order无法证明，因为有的范数不是处处可导）：
+
+  - $f(\theta x +(1-\theta)y) \le f(\theta x) + f((1-\theta)y)=\theta f(x)+(1-\theta)f(y)$
+
+- **Nonnegative weighted sums of convex function**：令 $f_1,f_2,...,f_k$ 为凸函数， $w_1,w_2,...,w_k$ 为非负实数，则 $f_i$ 的非负加权和为凸函数：
+
+  $$
+  f(x) = \sum_{i=1}^k{w_if_i(x)}
+  $$
+
+  - 证明：
+  
+    $$
+    f(\theta x+(1-\theta)y)	\\
+    =\sum_{i=1}^k{w_if_i(\theta x+(1-\theta)y)}	\\
+    \le
+    \sum_{i=1}^k{w_i(\theta f_i(x)+(1-\theta)f_i(y))}	\\
+    =\theta \sum_{i=1}^k{w_if_i(x)}+(1-\theta)\sum_{i=1}^k{w_if_i(y)}	\\
+    =\theta f(x)+(1-\theta)f(y)
+    $$
+
+## 4. Convex Optimization Problems
+
+**凸优化问题的形式**为：
+
+$$
+\min{f(x)},x \in C
+$$
+
+- $f$ 是凸函数
+- $C$ 是凸集合
+- $x$ 是优化变量
+
+或者更具体地，写为：
+
+$$
+\min{f(x)}	\\
+s.t.g_i(x)\le0,i=1,...,m	\\
+h_i(x)=0,i=1,...,p
+$$
+
+- $f$ 是凸函数
+- $g_i$ 是凸函数
+  - 必须满足 $g_i \le 0$ ，由于 $g_i$ 的0-sublabel集是凸集，这保证了可行域是凸集，否则将不能保证算法找到全局最优
+- $h_i$ 是仿射函数
+  - 只有仿射函数的约束能严格取等
+    - 可以这样认为：等号约束等价于两个不等号约束 $h_i\ge0$ ， $h_i\le0$ ，这两个约束同时有效当且仅当 $h_i$ 既是凸函数又是凹函数，因此 $h_i$ 只能为仿射函数
+- $x$ 是优化变量
+
+**optimal value**： $p^\*$ ，**optimal point**： $x^\*$ 
+
+$$
+p^\*=\min\{f(x):g_i(x) \le 0,i=1,...,m,h_i(x)=0,i=1,...,p\}	\\
+f(x^\*)=p^\*
+$$
+
+*有可能有多个甚至无穷个optimal point*
+
+### Global Optimality in Convex Problems
+
+#### 定义4.1 locally optimal
+
+​	点 $x$ 为**locally optimal**当它可行（满足约束条件）并且存在 $R>0$ ，对任意的可行点 $z,||x-z||_2\le R$ 均满足 $f(x)\le f(z)$
+
+#### 定义4.2 globally optimal
+
+​	点 $x$ 为**globally optimal**当它可行并且对任意的可行点 $z$ 均有 $f(x)\le f(z)$
+
+**对于凸优化问题，所有的局部最优均为全局最优**
+
+proof：
+
+​	假设 $x$ 为局部最优点但不是全局最优点，也就是说，存在可行点 $y$ ，满足 $f(x)>f(y)$
+
+​	根据局部最优的定义，不存在可行点 $z ,||x-z||_2 \le R$ ，并且 $f(z)<f(x)$
+
+​	此时，令 $z=\theta y+(1-\theta)x,\theta=\frac{R}{2||x-y||_2}$ ，则：
+
+$$
+||x-z||_2=||x-(\frac{R}{2||x-y||_2} y+(1-\frac{R}{2||x-y||_2})x)||_2=||\frac{R}{2||x-y||_2}(x-y)||_2=R/2\le R
+$$
+
+​	另一方面， $f(z)=f(\theta y+(1-\theta)x)\le\theta f(y)+(1-\theta)f(x)=f(x)+\theta(f(y)-f(x))<f(x)$
+
+​	因为 $x$ 和 $y$ 均为可行点，可行集为凸集，因此 $z$ 也可行，与假设矛盾
+
+### 凸优化问题的特殊形式
+
+#### Linear Programming（LP）
+
+目标函数 $f$ 和不等约束 $g_i$ 均为仿射函数，即：
+
+$$
+\min{c^Tx+d}	\\
+s.t.Gx \preceq h(分量不等式)	\\
+Ax=b
+$$
+
+#### Quadratic Programming（QP）
+
+不等约束 $g_i$ 是仿射函数，且目标函数 $f$ 是convex Quadratic function（凸二次函数），即：
+
+$$
+\min{\frac{1}{2}x^TPx+c^Tx+d},P是对称正半定阵	\\
+s.t.Gx \preceq h	\\
+Ax=b
+$$
+
+#### Quadratically Constrained Quadratic Programming（QCQP）
+
+目标函数 $f$ 和不等约束 $g_i$ 均为凸二次函数，即：
+
+$$
+\min{\frac{1}{2}x^TPx+c^Tx+d},P是对称正半定阵	\\
+s.t.\frac{1}{2}x^TQ_ix+r_i^Tx+s_i\le0,i=1,...,m,Q_i是对称正半定阵	\\
+Ax=b
+$$
+
+#### Semidefinite Programming（SDP）
+
+$$
+\min{tr(CX)}	\\
+s.t. tr(A_iX)=b_i,i=1,...,p	\\
+x \succeq 0
+$$
+
+- 对称矩阵 $X \in S^n$ 是优化变量
+- 对称矩阵 $C,A_i,...,A_p$ 由具体问题所定义
+- $X\succeq0$ 指 $X$ 正半定
+
+**一般性**：SDP > QCQP > QP > LP
+
+
 
 
 
