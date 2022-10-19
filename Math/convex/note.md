@@ -77,7 +77,63 @@ $$
 
 ![](./fig/20221019115940.png)
 
+### 凸性二阶条件（Second Order Condition of Convexity）
 
+假定函数 $f:R^n \rightarrow R$ 二阶可导，则 $f$ 为凸函数当且仅当 $D(f)$ 为凸集且Hessian半正定，即， $x \in D(f)$ ：
+
+$$
+\nabla_x^2f(x) \succeq 0	\\
+其中， \nabla_x^2f(x) \in R^{n*n}, (\nabla_x^2f(x))_{ij}=\frac{\partial^2f(x)}{\partial x_i\partial x_j}	\\
+其中， \succeq 意思是半正定，当 R^n 一维时，代表 f''(x) \ge 0
+$$
+
+- $f$ 严格convex当Hessian正定
+- $f$ concave当Hessian半负定
+
+### Jensen's Inequality
+
+从3.1的凸函数定义式出发：
+
+$$
+f(\theta x+(1-\theta)y) \le \theta f(x)+(1-\theta)f(y),0 \le \theta \le 1
+$$
+
+拓展到多个点：
+
+$$
+f(\sum_{i=1}^k{\theta_ix_i}) \le \sum_{i=1}^k{\theta_if(x_i)},\sum_{i=1}^k\theta_i=1,\forall i,\theta_i \ge 0
+$$
+
+拓展到积分运算：
+
+$$
+f(\int p(x)xdx) \le \int p(x)f(x)dx,\int p(x)dx=1,\forall x, p(x) \ge 0
+$$
+
+由于 $\int p(x)dx=1$ ，通常将 $p(x)$ 视为概率密度，以上不等式可以写为期望的形式：
+
+$$
+f(E[x]) \le E[f(x)]
+$$
+
+### Sublevel Sets
+
+给定凸函数 $f:R^n\rightarrow R$ 和实数 $\alpha \in R$ ， $\alpha$ **-sublevel set**： 
+
+$$
+\{x \in D(f):f(x) \le \alpha\}
+$$
+
+假设 $f(x) \le \alpha, f(y) \le \alpha$ ，则 $f(\theta x+(1-\theta)y) \le \theta f(x)+(1-\theta)f(y) \le \theta \alpha + (1-\theta)\alpha=\alpha$，因此，该集合为凸集合
+
+**Examples**：
+
+- **Exponential**：令 $f:R\rightarrow R, f(x)=e^{ax}$ ， $f''(x)=a^2e^{ax}$ ，因此为凸函数
+- **Negative logarithm**：令 $f:R \rightarrow R, f(x)=-\log(x)$ ，则 $f''(x)=1/x^2 > 0$
+- **Affine function**：令 $f:R^n \rightarrow R, f(x)=b^Tx+c,b \in R^n,c \in R$ ，则 $\nabla_x^2f(x)=0$ ，该矩阵既为半正定又为半负定，因此$f$ 既是凸函数又是凹函数
+- **Quadratic function**：令 $f:R^n \rightarrow R, f(x)=\frac{1}{2}x^TAx+b^Tx+c, 对称矩阵A \in S^n,b \in R^n, c \in R$ ，有 $\nabla_x^2f(x)=A$ ，因此， $f$ 的凸性仅仅由 $A$ 是否正半定决定，若 $A$ 正半定，则 $f$ 为凸函数，如果 $A$ 不定，则 $f$ 既不凹也不凸。
+  - **squared Euclideam norm**： $f(x)=||x||_2^2=x^Tx$ 为严格凸函数，因为 $A=I,b=0,c=0$ 
+- **Norm**：
 
 
 
