@@ -265,12 +265,117 @@ $$
 
 **一般性**：SDP > QCQP > QP > LP
 
+### Examples
+
+*以下给出使用凸优化解决问题的实例*
+
+- **支持向量机（SVM）**
+
 $$
+\min{\frac{1}{2}||w||_2^2+C\sum_{i=1}^m{\xi_i}}	\\
+s.t. y^{(i)}(w^Tx^{(i)}+b) \ge 1-\xi_i,i=1,...,m	\\
+\xi_i \ge 0,i=1,...,m	\\
+w \in R^n, \xi \in R^m, b \in R,C \in R
+$$
+
+**以上为QP问题**，给出形式化解决办法：
+
+定义 $k=m+n+1$
+
+优化变量：
+
+$$
+x \in R^k =
 \left[
 \begin{matrix}
-1 & 0 & 0 \\
-1 & 0 & 0 \\
-1 & 0 & 0 \\
+	w	\\
+	\xi	\\
+	b	\\
+\end{matrix}
+\right]
+$$
+
+定义矩阵：
+
+$$
+P \in R^{k \times k}=
+\left[
+\begin{matrix}
+	I & 0 & 0	\\
+	0 & 0 & 0	\\
+	0 & 0 & 0	\\
+\end{matrix}
+\right],
+c \in R^k=
+\left[
+    \begin{matrix}
+    	0	\\
+    	C \cdot \mathbf{1}	\\
+    	0
+    \end{matrix}
+\right],
+G \in R^{2m \times k}=
+\left[
+\begin{matrix}
+	-diag(y)X&-I&-y	\\
+	0&-I&0	\\
+\end{matrix}
+\right], 
+h \in R^{2m}=
+\left[
+\begin{matrix}
+	-1	\\
+	0
+\end{matrix}
+\right] \\
+X \in R^{m\times n}=
+\left[
+\begin{matrix}
+	x^{(1)T}	\\
+	x^{(2)T}	\\
+	\vdots	\\
+	x^{(m)T}
+\end{matrix}
+\right],
+y \in R^m=
+\left[
+\begin{matrix}
+	y^{(1)}	\\
+	y^{(2)}	\\
+	\vdots	\\
+	y^{(m)}	\\
+\end{matrix}
+\right]
+$$
+
+- **Constrained least squares**
+
+$$
+\min {\frac{1}{2}||Ax-b||_2^2}	\\
+s.t. l \preceq x \preceq u	\\
+A \in R^{m \times n}, b \in R^m, l \in R^n, u \in R^n
+$$
+
+**以上为QP问题**，给出形式化解决办法：
+
+优化变量： $x$
+
+定义矩阵：
+
+$$
+P=\frac{1}{2}A^TA,
+c=-b^TA,
+d=\frac{1}{2}b^Tb,
+G=\left[
+\begin{matrix}
+	-I\\
+	I\\
+\end{matrix}
+\right],
+h=\left[
+\begin{matrix}
+	-l\\
+	u\\
 \end{matrix}
 \right]
 $$
