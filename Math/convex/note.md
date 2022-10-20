@@ -264,3 +264,13 @@ $$
 - $X\succeq0$ 指 $X$ 正半定
 
 **一般性**：SDP > QCQP > QP > LP
+
+$$
+\left[
+\begin{matrix}
+1 & 0 & 0 \\
+1 & 0 & 0 \\
+1 & 0 & 0 \\
+\end{matrix}
+\right]
+$$
