@@ -379,3 +379,75 @@ h=\left[
 \end{matrix}
 \right]
 $$
+
+- **Maximum Likelihood for Logistic Regression**
+
+目标函数是一个凹函数：
+
+$$
+l(\theta)=\sum_{i=1}^n{y^{(i)}\ln{g(\theta^Tx^{(i)})}+(1-y^{(i)})\ln{(1-g(\theta^Tx^{(i)}))}}	\\
+其中，g(z)=\frac{1}{1+e^{-z}}
+$$
+
+最大化 $l(\theta)$ 即最小化 $-l(\theta)$ （凸函数）：
+
+$$
+\min{-l(\theta)}
+$$
+
+这个目标函数很难转变成以上给出的常见的凸优化标准形式，但由于 $l$ 是个凹函数，因此，采用Newton's Method等方法也能够找到全局最优值
+
+## 5. Lagrange Duality（拉格朗日对偶）
+
+​	当最小化可导凸函数 $f(x)$ 时， $x^\*$ 为全局最优点的充要条件是 $\nabla_xf(x^\*)=0$ ，然而，在带约束的凸优化问题中，这个最优化条件始终不能满足（ $x^\*$ 不在可行域中）。因此**对偶理论**希望能将最优化点用严格的方式符号化。
+
+**凸优化问题**：
+
+
+$$
+\min{f(x)}	\\
+s.t.g_i(x)\le0,i=1,...,m	\\
+h_i(x)=0,i=1,...,p
+$$
+
+- $x \in R^n$ 是优化变量
+- $f:R^n\rightarrow R$ 是可导凸函数
+- $g_i:R^n\rightarrow R$ 是可导凸函数
+- $h_i:R^n\rightarrow R$ 是仿射函数
+
+### 5.1 Lagrangian
+
+给定上述带约束的凸优化问题，**Lagrangian**描述为函数 $L$ ：
+
+$$
+L(x,\alpha,\beta)=f(x)+\sum_{i=1}^m{\alpha_ig_i(x)}+\sum_{i=1}^p{\beta_ih_i(x)}
+$$
+
+- **primal variables**： $x$
+
+- **dual variables 或 Lagrange multipliers**： $\alpha, \beta$
+
+*Lagrangian可以视作是原始凸优化问题目标函数的修改版本，拉格朗日算子视作“违反”不同的约束所带来的“开销”*
+
+​	**<u>对于任何的凸优化问题，均存在一种对偶变量的设置，使得Larangian对primal variable无约束的最小化（保持对偶变量固定）与原始的带约束的最优化问题的解相同。</u>**
+
+### 5.2 Primal and dual problems
+
+#### Primal problem
+
+![](./fig/20221020203830.png)
+
+- 函数 $\theta_p:R^n \rightarrow R$ 称为**primal objective**，等式右侧无约束的最小化问题称为**primal problem**
+- 点 $x \in R^n$ 称为**primal feasible**当 $g_i(x)\le0, i=1,...,m$ 并且 $h_i(x)=0,i=1,...,p$
+- 使用向量 $x^\*$ 表示问题的解， $p^\*=\theta_p(x^\*)$ 代表primal objective的最优值
+
+#### Dual problem
+
+*交换以上最小和最大的顺序，变换为***dual problem**：
+
+![](./fig/20221020203901.png)
+
+- 函数 $\theta_D:R^m \times R^p\rightarrow R$ 称作**dual objective**，等式右侧带约束的最大化问题称作**dual problem**
+- $(\alpha,\beta)$ 称作**dual feasible**当 $\alpha_i\ge0,i=1,...,m$
+- 使用 $(\alpha^\*,\beta^\*) \in R^m \times R^p$ 表示问题的解， $d^\*=\theta_D(\alpha^\*,\beta^\*)$ 表示dual objective的最优值
+
