@@ -207,7 +207,7 @@ proof：
 
 假设 $x$ 为局部最优点但不是全局最优点，也就是说，存在可行点 $y$ ，满足 $f(x)>f(y)$
 
-根据局部最优的定义，不存在可行点 $z ,||x-z||_2 \le R$ ，并且 $f(z)<f(x)$
+根据局部最优的定义，不存在可行点 $z,||x-z||_2 \le R$ ，并且有 $f(z) < f(x)$
 
 此时，令 $z=\theta y+(1-\theta)x,\theta=\frac{R}{2||x-y||_2}$ ，则：
 
@@ -215,7 +215,7 @@ $$
 ||x-z||_2=||x-(\frac{R}{2||x-y||_2} y+(1-\frac{R}{2||x-y||_2})x)||_2=||\frac{R}{2||x-y||_2}(x-y)||_2=R/2\le R
 $$
 
-另一方面， $f(z)=f(\theta y+(1-\theta)x)\le\theta f(y)+(1-\theta)f(x)=f(x)+\theta(f(y)-f(x))<f(x)$
+另一方面， $f(z)=f(\theta y+(1-\theta)x)\le\theta f(y)+(1-\theta)f(x)=f(x)+\theta(f(y)-f(x)) < f(x)$
 
 因为 $x$ 和 $y$ 均为可行点，可行集为凸集，因此 $z$ 也可行，与假设矛盾
 
