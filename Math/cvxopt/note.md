@@ -451,3 +451,71 @@ $$
 - $(\alpha,\beta)$ 称作**dual feasible**当 $\alpha_i\ge0,i=1,...,m$
 - 使用 $(\alpha^\*,\beta^\*) \in R^m \times R^p$ 表示问题的解， $d^\*=\theta_D(\alpha^\*,\beta^\*)$ 表示dual objective的最优值
 
+**理解primal problem**
+
+$$
+\theta_p(x)=\max_{\alpha,\beta:\alpha_i\ge0,\forall i}{L(x,\alpha,\beta)}
+= \max_{\alpha,\beta:\alpha_i\ge0,\forall i}{\[f(x)+\sum_{i=1}^m{\alpha_ig_i(x)}+\sum_{i=1}^p{\beta_ih_i(x)}\]}
+= f(x)+\max_{\alpha,\beta:\alpha_i\ge0,\forall i}{\[\sum_{i=1}^m{\alpha_ig_i(x)}+\sum_{i=1}^p{\beta_ih_i(x)}\]}
+$$
+
+- 对任何的 $g_i(x)>0$ ，最大化括号内的表达式即意味着将 $\alpha_i$ 设置为任意大的正数；
+- 对 $g_i(x)<0$ ，由于要求 $\alpha_i \ge 0$ ，最大化括号内的表达式即意味着设置 $\alpha_i=0$
+- 对 $h_i(x)\neq0$ ，最大化括号内的表达式即意味着选择与 $h_i(x)$ 同号、绝对值任意大的 $\beta_i$
+- 对 $h_i(x)=0$ ，最大值即为 $0$ ，与 $\beta_i$ 独立
+
+将以上分析总结为（**这保证了不会取到非可行域中的点**）：
+
+![](./fig/20221026201640.png)
+
+**理解dual problem**：
+
+**Lemma 1**：若 $(\alpha, \beta)$ dual feasible，则 $\theta_D(\alpha,\beta)\le p^\*$
+
+​	proof：
+
+$$
+\theta_D(\alpha,\beta)=\min_x{L(x,\alpha,\beta)}
+\le L(x^\*,\alpha, \beta)
+=f(x^\*)+\sum_{i=1}^m{\alpha_ig_i(x^\*)}+\sum_{i=1}^p{\beta_ih_i(x^\*)}
+\le f(x^\*)
+=p^\*
+$$
+
+以上定理表明，给定任何dual feasible的 $(\alpha,\beta)$ ，dual objective $\theta_D(\alpha,\beta)$ 提供了 $p^\*$ 的下界，由于对偶问题所作的是在对偶可行域上最大化dual objective，因此，对偶问题可以视作找到与 $p^\*$ “挨得最近”的下界
+
+**Lemma 2（Weak Duality）**：对任何的primal和dual problem，有： $d^\*\le p^\*$
+
+**Lemma 3 （Strong Duality）**：对于任何满足**constraint qualifications**的primal和dual problem， $d^\*=p^\*$
+
+​	存在很多不同的constraint qualification，最常见的一种为**Slater's condition**：primal/dual problem满足该条件，当存在primal问题的可行解 $x$ ，使得所有的不等约束严格满足（ $g_i(x) < 0$,i=1,...,m ）。实践中，几乎所有的凸优化问题均满足constraint qualification，因此primal和dual问题有相同的最优值。
+
+#### Complementary slackness（KKT complementary）
+
+**Lemma 4 （Complementary slackness）**：若满足Strong Duality，则 $\alpha_i^\*g_i(x_i^\*)=0,\forall i$
+
+​	proof：假设满足strong duality，则
+
+$$
+p^\*=d^\*=\theta_D(\alpha^\*,\beta^\*)=\min_x{L(x,\alpha^\*,\beta^\*)}
+\le L(x^\*,\alpha^\*,\beta^\*)
+=f(x^\*)+\sum_{i=1}^m{\alpha_i^\*g_i(x^\*)}+\sum_{i=1}^p{\beta_i^\*h_i(x^\*)}
+\le f(x^\*)=p^\*
+$$
+
+由于表达式的起始项和末尾项相等，因此，表达式所有的 $\le$ 均取等，因此：
+
+$$
+\sum_{i=1}^m{\alpha_i^\*g_i(x^\*)}+\sum_{i=1}^p{\beta_i^\*h_i(x^\*)}=0
+$$
+
+得证
+
+KKT条件可以表述为以下的形式：
+
+$$
+\alpha_i^\* > 0 \rightarrow g_i(x^\*)=0,	\\
+g_i(x^\*) < 0 \rightarrow \alpha_i^\* = 0
+$$
+
+第一个式子称作**active constraint**，在SVM中，又被称作**support vector**
